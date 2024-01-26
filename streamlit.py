@@ -2,6 +2,7 @@ import streamlit as st
 from flask import Flask, request, jsonify
 import joblib
 import pandas as pd
+from threading import Thread
 
 # Load the model
 model = joblib.load('linear_regression_model.joblib')
@@ -30,5 +31,9 @@ def predict_endpoint():
     # Return prediction as JSON
     return jsonify({'prediction': prediction})
 
-if __name__ == '__main__':
+def run_flask():
     app.run(debug=True)
+
+if __name__ == '__main__':
+    # Run Flask app in a separate thread
+    Thread(target=run_flask).start()
