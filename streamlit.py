@@ -1,7 +1,10 @@
 import streamlit as st
+import joblib
+import pandas as pd
 import requests
 
-API_URL = "http://localhost:5000/predict"  # Update this URL with your API endpoint
+# Load the pre-trained model
+model = joblib.load('pretrained_model.pkl')
 
 def get_prediction(average_value, province_name):
     payload = {
@@ -20,6 +23,7 @@ def main():
 
     average_value = st.number_input('Enter average value:')
     province_name = st.text_input('Enter province name:')
+    
     if st.button('Get Prediction'):
         prediction = get_prediction(average_value, province_name)
         if prediction is not None:
