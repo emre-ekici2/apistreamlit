@@ -4,7 +4,7 @@ import pandas as pd
 import requests
 
 # Load the pre-trained model
-model = joblib.load('pretrained_model.joblib')
+model = joblib.load('linear_regression_model.joblib')
 
 def get_prediction(average_value, province_name):
     payload = {
