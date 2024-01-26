@@ -11,7 +11,7 @@ def get_prediction(average_value, province_name):
         'average_value': average_value,
         'province_name': province_name
     }
-    response = requests.post(API_URL, json=payload)
+    response = requests.post('https://apiapp-group3-warninglevels.streamlit.app/', json=payload)
     if response.status_code == 200:
         prediction = response.json()['prediction']
         return prediction
