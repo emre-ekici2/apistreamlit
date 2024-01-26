@@ -7,16 +7,9 @@ import requests
 model = joblib.load('linear_regression_model.joblib')
 
 def get_prediction(average_value, province_name):
-    payload = {
-        'average_value': average_value,
-        'province_name': province_name
-    }
-    response = requests.post('https://apiapp-group3-warninglevels.streamlit.app/', json=payload)
-    if response.status_code == 200:
-        prediction = response.json()['prediction']
-        return prediction
-    else:
-        return None
+    input_data = pd.DataFrame([[average_value, province_name]], columns=['average_value', 'province_name'])
+    prediction = model.predict(input_data)
+    return prediction.tolist()
 
 def main():
     st.title('Prediction API Client')
@@ -25,8 +18,13 @@ def main():
     province_name = st.text_input('Enter province name:')
     
     if st.button('Get Prediction'):
-        prediction = get_prediction(average_value, province_name)
-        if prediction is not None:
+        payload = {
+            'average_value': average_value,
+            'province_name': province_name
+        }
+        response = requests.post('https://apiapp-group3-warninglevels.streamlit.app/', json=payload) 
+        if response.status_code == 200:
+            prediction = response.json()['prediction']
             st.write('Prediction:', prediction)
         else:
             st.write('Failed to retrieve prediction.')
