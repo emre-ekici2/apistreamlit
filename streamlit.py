@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from socketserver import ThreadingMixIn
 import joblib
 import pandas as pd
 
@@ -6,6 +7,9 @@ import pandas as pd
 model = joblib.load('linear_regression_model.joblib')
 
 app = Flask(__name__)
+
+class ThreadingFlaskServer(ThreadingMixIn, Flask):
+    pass
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -17,4 +21,5 @@ def predict():
     return jsonify({'prediction': prediction.tolist()})
 
 if __name__ == '__main__':
+    app = ThreadingFlaskServer(__name__)
     app.run(debug=True)
